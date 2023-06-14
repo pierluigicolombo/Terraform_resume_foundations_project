@@ -31,10 +31,10 @@ resource "azurerm_virtual_network" "mtc-vn" {
 }
 
 resource "azurerm_subnet" "mtc-subnet" {
-  name                      = "mtc-subnet"
-  resource_group_name       = azurerm_resource_group.mtc-rg.name
-  virtual_network_name      = azurerm_virtual_network.mtc-vn.name
-  address_prefixes          = ["10.123.1.0/24"]
+  name                 = "mtc-subnet"
+  resource_group_name  = azurerm_resource_group.mtc-rg.name
+  virtual_network_name = azurerm_virtual_network.mtc-vn.name
+  address_prefixes     = ["10.123.1.0/24"]
 }
 
 
@@ -66,4 +66,15 @@ resource "azurerm_network_security_rule" "mtc-dev-rule" {
 resource "azurerm_subnet_network_security_group_association" "mtc-sga" {
   subnet_id                 = azurerm_subnet.mtc-subnet.id
   network_security_group_id = azurerm_network_security_group.mtc-sg.id
+}
+
+resource "azurerm_public_ip" "mtc-ip" {
+  name                = "mtp-public-ip"
+  resource_group_name = azurerm_resource_group.mtc-rg.name
+  location            = azurerm_virtual_network.mtc-vn.location
+  allocation_method   = "Dynamic"
+
+  tags = {
+    environment = "dev"
+  }
 }
