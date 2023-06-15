@@ -122,4 +122,6 @@ resource "azurerm_linux_virtual_machine" "mtc-vm" {
     sku       = "18.04-LTS"
     version   = "latest"
   }
+
+  custom_data = filebase64("customdata.tpl")
 }
